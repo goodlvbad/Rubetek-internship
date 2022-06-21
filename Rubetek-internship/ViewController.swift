@@ -40,17 +40,11 @@ class ViewController: UIViewController {
     private func checkNetworkCore() {
         if flag {
             networkService.fetchCamerasData { result, error in
-                if let result = result {
-                   let urlImg = result[0].snapshot
-                    print(urlImg)
-                }
+                
             }
         } else {
             networkService.fetchDoorsData { result, error in
-                if let result = result {
-                    let id = result[0].id
-                    print(id)
-                }
+                
             }
         }
         flag = !flag

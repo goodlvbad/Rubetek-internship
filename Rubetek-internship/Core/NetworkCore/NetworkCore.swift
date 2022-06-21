@@ -22,8 +22,6 @@ extension NetworkCore: NetworkCoreProtocol {
     func request<Res: Responsable>(metadata: String, comletion: @escaping (Result<Res, NetworkError>) -> Void) {
         let urlRequest = URL(string: "\(urlString)/\(metadata)")
 
-        print("\(urlString)/\(metadata)")
-        
         guard let url = urlRequest else {
             comletion(.failure(NetworkError.invalidURL))
             return

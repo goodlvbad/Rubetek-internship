@@ -13,8 +13,10 @@ final class DoorsViewController: UIViewController {
     private let cellWithCameraId = "doorsCellWithCameraId"
     
     private lazy var customView = DoorsView()
+
+    private lazy var networkService: ServiceProtocol = Service()
     
-    var flag = false
+    var arr: [DoorsRawModel] = []
     
     override func loadView() {
         super.loadView()
@@ -25,6 +27,20 @@ final class DoorsViewController: UIViewController {
         super.viewDidLoad()
         configureNavigationBar()
         setupTableView()
+        networkService.fetchDoorsData { result, error in
+            if let result = result {
+                self.arr = result
+                
+                print(self.arr.count)
+                
+                DispatchQueue.main.async {
+                    self.customView.tableView.reloadData()
+                }
+            }
+            if let error = error {
+                print(error.localizedDescription)
+            }
+        }
     }
 }
 
@@ -49,25 +65,20 @@ extension DoorsViewController {
 
 extension DoorsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        4
+        arr.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! DoorsTableCell
         let cellWithCamera = tableView.dequeueReusableCell(withIdentifier: cellWithCameraId, for: indexPath) as! DoorsWithCameraTableCell
-        if !flag {
-            cell.callbackForLockBtn = changeFlag
-            cell.setupCell(name: "test")
+        let model = arr[indexPath.row]
+        if model.snapshot == nil {
+            cell.setupCell(name: model.name)
             return cell
         } else {
-            cellWithCamera.callbackForLockBtn = changeFlag
-            cellWithCamera.setupCell(image: nil, name: "nil")
+            cellWithCamera.setupCell(image: nil, name: model.name)
             return cellWithCamera
         }
     }
     
-    func changeFlag() {
-        flag = !flag
-        customView.tableView.reloadData()
-    }
 }
