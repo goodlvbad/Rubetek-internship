@@ -16,8 +16,8 @@ enum ServiceMethod: String {
 }
 
 protocol ServiceProtocol: AnyObject {
-    func fetchDoorsData(comletion: @escaping (Swift.Result<[DoorsRawModel], Error>) -> Void)
-    func fetchCamerasData(comletion: @escaping (Swift.Result<[CameraRawModel], Error>) -> Void)
+    func fetchDoorsData(comletion: @escaping (_ result: [DoorsRawModel]?, _ error: Error?) -> Void)
+    func fetchCamerasData(comletion: @escaping (_ result: [CameraRawModel]?, _ error: Error?) -> Void)
 }
 
 class Service {
@@ -26,26 +26,26 @@ class Service {
 }
 
 extension Service: ServiceProtocol {
-    func fetchDoorsData(comletion: @escaping (Result<[DoorsRawModel], Error>) -> Void) {
+    func fetchDoorsData(comletion: @escaping (_ result: [DoorsRawModel]?, _ error: Error?) -> Void) {
         method = .doors
         network.request(metadata: method.rawValue) { (result: Result<DoorsResponseModel, NetworkError>) in
             switch result {
             case .success(let respones):
-                print(respones.data)
+                comletion(respones.data, nil)
             case .failure(let error):
-                print(error)
+                comletion(nil, error)
             }
         }
     }
     
-    func fetchCamerasData(comletion: @escaping (Result<[CameraRawModel], Error>) -> Void) {
+    func fetchCamerasData(comletion: @escaping (_ result: [CameraRawModel]?, _ error: Error?) -> Void) {
         method = .cameras
         network.request(metadata: method.rawValue) { (result: Result<CamerasResponseModel, NetworkError>) in
             switch result {
             case .success(let respones):
-                print(respones.data)
+                comletion(respones.data.cameras, nil)
             case .failure(let error):
-                print(error)
+                comletion(nil, error)
             }
         }
     }

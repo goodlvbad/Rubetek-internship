@@ -18,6 +18,15 @@
 		E4727A0B2860EB7F002D9D4D /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4727A0A2860EB7F002D9D4D /* Service.swift */; };
 		E4727A122860EF7C002D9D4D /* CameraRawModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4727A112860EF7C002D9D4D /* CameraRawModel.swift */; };
 		E4727A142860F0C6002D9D4D /* DoorsRawModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4727A132860F0C6002D9D4D /* DoorsRawModel.swift */; };
+		E4727A1628622137002D9D4D /* CustomTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4727A1528622137002D9D4D /* CustomTabBarController.swift */; };
+		E4727A1828622AF2002D9D4D /* DoorsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4727A1728622AF2002D9D4D /* DoorsViewController.swift */; };
+		E4727A1A28622B31002D9D4D /* CamerasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4727A1928622B31002D9D4D /* CamerasViewController.swift */; };
+		E4727A1C28623C66002D9D4D /* DoorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4727A1B28623C66002D9D4D /* DoorsView.swift */; };
+		E4727A1E28623CDC002D9D4D /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4727A1D28623CDC002D9D4D /* BaseView.swift */; };
+		E4727A22286241EE002D9D4D /* DoorsTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4727A21286241EE002D9D4D /* DoorsTableCell.swift */; };
+		E4727A2428624330002D9D4D /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4727A2328624330002D9D4D /* Assets.swift */; };
+		E4727A26286245EC002D9D4D /* Extension UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4727A25286245EC002D9D4D /* Extension UIView.swift */; };
+		E4727A2A28624810002D9D4D /* DoorsWithCameraTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4727A2928624810002D9D4D /* DoorsWithCameraTableCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +43,15 @@
 		E4727A0A2860EB7F002D9D4D /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		E4727A112860EF7C002D9D4D /* CameraRawModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraRawModel.swift; sourceTree = "<group>"; };
 		E4727A132860F0C6002D9D4D /* DoorsRawModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoorsRawModel.swift; sourceTree = "<group>"; };
+		E4727A1528622137002D9D4D /* CustomTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBarController.swift; sourceTree = "<group>"; };
+		E4727A1728622AF2002D9D4D /* DoorsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoorsViewController.swift; sourceTree = "<group>"; };
+		E4727A1928622B31002D9D4D /* CamerasViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CamerasViewController.swift; sourceTree = "<group>"; };
+		E4727A1B28623C66002D9D4D /* DoorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoorsView.swift; sourceTree = "<group>"; };
+		E4727A1D28623CDC002D9D4D /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
+		E4727A21286241EE002D9D4D /* DoorsTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoorsTableCell.swift; sourceTree = "<group>"; };
+		E4727A2328624330002D9D4D /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
+		E4727A25286245EC002D9D4D /* Extension UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension UIView.swift"; sourceTree = "<group>"; };
+		E4727A2928624810002D9D4D /* DoorsWithCameraTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoorsWithCameraTableCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,7 +90,11 @@
 				E47279F72860E260002D9D4D /* Assets.xcassets */,
 				E47279F92860E260002D9D4D /* LaunchScreen.storyboard */,
 				E47279FC2860E260002D9D4D /* Info.plist */,
+				E4727A2828624636002D9D4D /* Extensions */,
 				E4727A042860E9D8002D9D4D /* Core */,
+				E4727A1F28623E5A002D9D4D /* Controllers */,
+				E4727A2028623E6A002D9D4D /* Views */,
+				E4727A2728624627002D9D4D /* Helpers */,
 			);
 			path = "Rubetek-internship";
 			sourceTree = "<group>";
@@ -104,6 +126,43 @@
 				E4727A0A2860EB7F002D9D4D /* Service.swift */,
 			);
 			path = Service;
+			sourceTree = "<group>";
+		};
+		E4727A1F28623E5A002D9D4D /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				E4727A1528622137002D9D4D /* CustomTabBarController.swift */,
+				E4727A1728622AF2002D9D4D /* DoorsViewController.swift */,
+				E4727A1928622B31002D9D4D /* CamerasViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		E4727A2028623E6A002D9D4D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E4727A1B28623C66002D9D4D /* DoorsView.swift */,
+				E4727A1D28623CDC002D9D4D /* BaseView.swift */,
+				E4727A21286241EE002D9D4D /* DoorsTableCell.swift */,
+				E4727A2928624810002D9D4D /* DoorsWithCameraTableCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E4727A2728624627002D9D4D /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				E4727A2328624330002D9D4D /* Assets.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		E4727A2828624636002D9D4D /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				E4727A25286245EC002D9D4D /* Extension UIView.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -178,13 +237,22 @@
 			files = (
 				E47279F32860E25D002D9D4D /* ViewController.swift in Sources */,
 				E4727A0B2860EB7F002D9D4D /* Service.swift in Sources */,
+				E4727A1628622137002D9D4D /* CustomTabBarController.swift in Sources */,
 				E47279EF2860E25D002D9D4D /* AppDelegate.swift in Sources */,
 				E47279F12860E25D002D9D4D /* SceneDelegate.swift in Sources */,
+				E4727A2A28624810002D9D4D /* DoorsWithCameraTableCell.swift in Sources */,
+				E4727A1A28622B31002D9D4D /* CamerasViewController.swift in Sources */,
+				E4727A22286241EE002D9D4D /* DoorsTableCell.swift in Sources */,
 				E4727A092860EB47002D9D4D /* NetworkError.swift in Sources */,
 				E4727A142860F0C6002D9D4D /* DoorsRawModel.swift in Sources */,
+				E4727A1828622AF2002D9D4D /* DoorsViewController.swift in Sources */,
+				E4727A2428624330002D9D4D /* Assets.swift in Sources */,
 				E4727A122860EF7C002D9D4D /* CameraRawModel.swift in Sources */,
 				E4727A072860EB35002D9D4D /* Responsable.swift in Sources */,
+				E4727A26286245EC002D9D4D /* Extension UIView.swift in Sources */,
+				E4727A1E28623CDC002D9D4D /* BaseView.swift in Sources */,
 				E4727A032860E41F002D9D4D /* NetworkCore.swift in Sources */,
+				E4727A1C28623C66002D9D4D /* DoorsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
