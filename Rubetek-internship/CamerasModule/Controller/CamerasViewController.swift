@@ -15,9 +15,11 @@ final class CamerasViewController: UIViewController {
     private lazy var customView = CamerasView()
     
     private lazy var networkService: ServiceProtocol = Service()
+    private lazy var dataProvider: DataProviderProtocol = DataProvider()
     
-    var camerasArr: [CameraRawModel] = []
-    var roomsArr: [String] = []
+    private lazy var cameras: [CamerasRoomData] = []
+    
+    private let userData = UserData()
 
     override func loadView() {
         super.loadView()
@@ -28,16 +30,24 @@ final class CamerasViewController: UIViewController {
         super.viewDidLoad()
         configureNavigationBar()
         setupTableView()
-        networkService.fetchCamerasData { result, error in
-            if let result = result {
-                self.camerasArr = result.cameras
-                self.roomsArr = result.room
-                DispatchQueue.main.async {
-                    self.customView.tableView.reloadData()
-                }
+        
+        if userData.isSavedCamersData {
+            self.cameras = self.dataProvider.fetchCameraData()
+            DispatchQueue.main.async {
+                self.customView.tableView.reloadData()
             }
-            if let error = error {
-                print(error.localizedDescription)
+        } else {
+            networkService.fetchCamerasData { result, error in
+                if let result = result {
+                    self.dataProvider.saveCamerasData(data: result)
+                    self.cameras = self.dataProvider.prepareToShowCameraData(from: result)
+                    DispatchQueue.main.async {
+                        self.customView.tableView.reloadData()
+                    }
+                }
+                if let error = error {
+                    print(error)
+                }
             }
         }
     }
@@ -65,26 +75,27 @@ extension CamerasViewController {
 //MARK: - UITableViewDelegate, UITableViewDataSource
 extension CamerasViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        camerasArr.count
+        cameras[section].cameras.count
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        roomsArr.count
+        cameras.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! CamerasTableCell
-        let model = camerasArr[indexPath.row]
+//        let model = dataProvider.camerasRoomData[indexPath.section].cameras[indexPath.row]
+        let model = cameras[indexPath.section].cameras[indexPath.row]
         cell.setupCell(image: nil, name: model.name)
         return cell
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerId) as! CamerasSectionView
-        let sectionName = roomsArr[section]
+//        let sectionName = dataProvider.camerasRoomData[section].room
+        let sectionName = cameras[section].room
         header.setupHeader(title: sectionName)
         return header
     }
-    
-    
+
 }

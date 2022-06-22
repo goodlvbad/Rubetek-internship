@@ -31,7 +31,7 @@ final class DoorsViewController: UIViewController {
             if let result = result {
                 self.arr = result
                 
-                print(self.arr.count)
+//                print(self.arr.count)
                 
                 DispatchQueue.main.async {
                     self.customView.tableView.reloadData()
