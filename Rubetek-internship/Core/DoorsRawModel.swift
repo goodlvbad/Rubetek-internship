@@ -16,6 +16,10 @@ struct DoorsRawModel: Codable {
 }
 
 struct DoorsResponseModel: Responsable {
+    func fetchData(comletion: @escaping (Responsable?, Error?) -> Void) {
+        
+    }
+    
     let success: Bool
     let data: [DoorsRawModel]
 }

@@ -10,7 +10,6 @@
 		90BDD4C9821BE81C54D11E91 /* Pods_Rubetek_internship.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D980DF05C7F12998CBB9395C /* Pods_Rubetek_internship.framework */; };
 		E47279EF2860E25D002D9D4D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47279EE2860E25D002D9D4D /* AppDelegate.swift */; };
 		E47279F12860E25D002D9D4D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47279F02860E25D002D9D4D /* SceneDelegate.swift */; };
-		E47279F32860E25D002D9D4D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47279F22860E25D002D9D4D /* ViewController.swift */; };
 		E47279F82860E260002D9D4D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E47279F72860E260002D9D4D /* Assets.xcassets */; };
 		E47279FB2860E260002D9D4D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E47279F92860E260002D9D4D /* LaunchScreen.storyboard */; };
 		E4727A032860E41F002D9D4D /* NetworkCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4727A022860E41F002D9D4D /* NetworkCore.swift */; };
@@ -31,9 +30,8 @@
 		E4727A3228626088002D9D4D /* DoorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4727A3128626088002D9D4D /* DoorsView.swift */; };
 		E4727A34286260A2002D9D4D /* CamerasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4727A33286260A2002D9D4D /* CamerasView.swift */; };
 		E4727A3C286263BA002D9D4D /* DataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4727A3B286263BA002D9D4D /* DataProvider.swift */; };
-		E4727A4328634B65002D9D4D /* CamerasRoomData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4727A4228634B65002D9D4D /* CamerasRoomData.swift */; };
-		E4727A4628634BDD002D9D4D /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4727A4528634BDD002D9D4D /* UserData.swift */; };
 		E48CCEE72863523F0081CC9E /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48CCEE62863523F0081CC9E /* ImageLoader.swift */; };
+		E48CCEEA28636B960081CC9E /* CamerasResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E48CCEE928636B960081CC9E /* CamerasResponseModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,7 +41,6 @@
 		E47279EB2860E25D002D9D4D /* Rubetek-internship.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rubetek-internship.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E47279EE2860E25D002D9D4D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E47279F02860E25D002D9D4D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		E47279F22860E25D002D9D4D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E47279F72860E260002D9D4D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E47279FA2860E260002D9D4D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E47279FC2860E260002D9D4D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -65,9 +62,8 @@
 		E4727A3128626088002D9D4D /* DoorsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoorsView.swift; sourceTree = "<group>"; };
 		E4727A33286260A2002D9D4D /* CamerasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CamerasView.swift; sourceTree = "<group>"; };
 		E4727A3B286263BA002D9D4D /* DataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProvider.swift; sourceTree = "<group>"; };
-		E4727A4228634B65002D9D4D /* CamerasRoomData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CamerasRoomData.swift; sourceTree = "<group>"; };
-		E4727A4528634BDD002D9D4D /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		E48CCEE62863523F0081CC9E /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		E48CCEE928636B960081CC9E /* CamerasResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CamerasResponseModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,18 +116,10 @@
 		E47279ED2860E25D002D9D4D /* Rubetek-internship */ = {
 			isa = PBXGroup;
 			children = (
-				E47279EE2860E25D002D9D4D /* AppDelegate.swift */,
-				E47279F02860E25D002D9D4D /* SceneDelegate.swift */,
-				E4727A1528622137002D9D4D /* CustomTabBarController.swift */,
-				E47279F22860E25D002D9D4D /* ViewController.swift */,
-				E47279F72860E260002D9D4D /* Assets.xcassets */,
-				E47279F92860E260002D9D4D /* LaunchScreen.storyboard */,
-				E47279FC2860E260002D9D4D /* Info.plist */,
-				E4727A3928626332002D9D4D /* CamerasModule */,
-				E4727A2828624636002D9D4D /* Extensions */,
-				E4727A2728624627002D9D4D /* Helpers */,
-				E4727A042860E9D8002D9D4D /* Core */,
+				E48CCEE8286365470081CC9E /* Application */,
 				E4727A3A2862634D002D9D4D /* DoorsModule */,
+				E4727A3928626332002D9D4D /* CamerasModule */,
+				E4727A042860E9D8002D9D4D /* Core */,
 				E4727A3B286263BA002D9D4D /* DataProvider.swift */,
 				E48CCEE62863523F0081CC9E /* ImageLoader.swift */,
 			);
@@ -141,6 +129,8 @@
 		E4727A042860E9D8002D9D4D /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				E4727A2728624627002D9D4D /* Helpers */,
+				E4727A2828624636002D9D4D /* Extensions */,
 				E4727A052860EB1B002D9D4D /* NetworkCore */,
 				E4727A0C2860EBB4002D9D4D /* Service */,
 				E4727A112860EF7C002D9D4D /* CameraRawModel.swift */,
@@ -189,7 +179,6 @@
 			isa = PBXGroup;
 			children = (
 				E4727A2328624330002D9D4D /* Assets.swift */,
-				E4727A4528634BDD002D9D4D /* UserData.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -242,9 +231,22 @@
 		E4727A4428634B73002D9D4D /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				E4727A4228634B65002D9D4D /* CamerasRoomData.swift */,
+				E48CCEE928636B960081CC9E /* CamerasResponseModel.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		E48CCEE8286365470081CC9E /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				E47279EE2860E25D002D9D4D /* AppDelegate.swift */,
+				E47279F02860E25D002D9D4D /* SceneDelegate.swift */,
+				E4727A1528622137002D9D4D /* CustomTabBarController.swift */,
+				E47279F72860E260002D9D4D /* Assets.xcassets */,
+				E47279F92860E260002D9D4D /* LaunchScreen.storyboard */,
+				E47279FC2860E260002D9D4D /* Info.plist */,
+			);
+			path = Application;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -361,7 +363,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E47279F32860E25D002D9D4D /* ViewController.swift in Sources */,
 				E4727A0B2860EB7F002D9D4D /* Service.swift in Sources */,
 				E4727A1628622137002D9D4D /* CustomTabBarController.swift in Sources */,
 				E4727A3C286263BA002D9D4D /* DataProvider.swift in Sources */,
@@ -373,10 +374,9 @@
 				E4727A3228626088002D9D4D /* DoorsView.swift in Sources */,
 				E4727A22286241EE002D9D4D /* DoorsTableCell.swift in Sources */,
 				E4727A092860EB47002D9D4D /* NetworkError.swift in Sources */,
-				E4727A4628634BDD002D9D4D /* UserData.swift in Sources */,
 				E4727A142860F0C6002D9D4D /* DoorsRawModel.swift in Sources */,
+				E48CCEEA28636B960081CC9E /* CamerasResponseModel.swift in Sources */,
 				E48CCEE72863523F0081CC9E /* ImageLoader.swift in Sources */,
-				E4727A4328634B65002D9D4D /* CamerasRoomData.swift in Sources */,
 				E4727A1828622AF2002D9D4D /* DoorsViewController.swift in Sources */,
 				E4727A2428624330002D9D4D /* Assets.swift in Sources */,
 				E4727A3028625D4F002D9D4D /* CamerasTableCell.swift in Sources */,
@@ -526,7 +526,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7752T724HD;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Rubetek-internship/Info.plist";
+				INFOPLIST_FILE = "Rubetek-internship/Application/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -556,7 +556,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7752T724HD;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Rubetek-internship/Info.plist";
+				INFOPLIST_FILE = "Rubetek-internship/Application/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;

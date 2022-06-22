@@ -8,6 +8,5 @@
 import Foundation
 
 protocol Responsable: Codable {
+    func fetchData(comletion: @escaping (_ result: Responsable?, _ error: Error?) -> Void)
 }
-
-
