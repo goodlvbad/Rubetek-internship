@@ -16,6 +16,7 @@ final class CamerasViewController: UIViewController {
     
     private lazy var networkService: ServiceProtocol = Service()
     private lazy var dataProvider: DataProviderProtocol = DataProvider()
+    private lazy var imageLoader: ImageLoaderProtocol = ImageLoader()
     
     private lazy var cameras: [CamerasRoomData] = []
     
@@ -30,6 +31,8 @@ final class CamerasViewController: UIViewController {
         super.viewDidLoad()
         configureNavigationBar()
         setupTableView()
+        
+//        dataProvider.removeAll()
         
         if userData.isSavedCamersData {
             self.cameras = self.dataProvider.fetchCameraData()
@@ -84,15 +87,20 @@ extension CamerasViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! CamerasTableCell
-//        let model = dataProvider.camerasRoomData[indexPath.section].cameras[indexPath.row]
         let model = cameras[indexPath.section].cameras[indexPath.row]
+//        if let url = URL(string: model.snapshot) {
+//            imageLoader.loadImage(from: url) { image in
+//                cell.setupCell(image: image, name: model.name)
+//            }
+//        } else {
+//            cell.setupCell(image: nil, name: model.name)
+//        }
         cell.setupCell(image: nil, name: model.name)
         return cell
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerId) as! CamerasSectionView
-//        let sectionName = dataProvider.camerasRoomData[section].room
         let sectionName = cameras[section].room
         header.setupHeader(title: sectionName)
         return header

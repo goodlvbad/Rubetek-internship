@@ -29,7 +29,8 @@ final class DataProvider: DataProviderProtocol {
     
     func removeAll() {
 //        print(Realm.Configuration.defaultConfiguration.fileURL!)
-//        try! FileManager.default.removeItem(at: Realm.Configuration.defaultConfiguration.fileURL!)
+        try! FileManager.default.removeItem(at: Realm.Configuration.defaultConfiguration.fileURL!)
+        userData.setSavedCamersData(false)
     }
 }
 
@@ -69,8 +70,10 @@ extension DataProvider {
                 camera.snapshot = raw.snapshot
                 camera.id = raw.id
                 camera.rec = raw.rec
-                camera.room = roomData
-                roomData.cameras.append(camera)
+                if raw.room?.lowercased() == roomData.name.lowercased() {
+                    camera.room = roomData
+                    roomData.cameras.append(camera)
+                }
                 loadingQueue.async { [weak self] in
                     guard let self = self else { return }
                     self.realm.beginWrite()
@@ -117,6 +120,7 @@ extension DataProvider {
             let data = CamerasRoomData(room: roomName, cameras: tempArrModel)
             tempArr.append(data)
         }
+//        print(tempArr)
         return tempArr
     }
     
