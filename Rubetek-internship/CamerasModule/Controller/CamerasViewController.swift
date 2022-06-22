@@ -119,5 +119,4 @@ extension CamerasViewController: UITableViewDelegate, UITableViewDataSource {
         header.setupHeader(title: sectionName)
         return header
     }
-
 }

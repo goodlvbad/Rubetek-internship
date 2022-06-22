@@ -17,7 +17,7 @@ final class DoorsWithCameraTableCell: UITableViewCell {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = cornerRadius
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .red
         return view
     }()
     

@@ -14,8 +14,6 @@ protocol ImageLoaderProtocol: AnyObject {
 
 final class ImageLoader {
     static let shared: ImageLoaderProtocol = ImageLoader()
-    
-    private lazy var loadingQueue = DispatchQueue(label: "image loading queue")
 }
 
 extension ImageLoader: ImageLoaderProtocol {
@@ -33,18 +31,5 @@ extension ImageLoader: ImageLoaderProtocol {
         DispatchQueue.main.async {
             completion(image)
         }
-        
-//        loadingQueue.async {
-//            guard let data = try? Data(contentsOf: url),
-//                  let image = UIImage(data: data) else {
-//                DispatchQueue.main.async {
-//                    completion(nil)
-//                }
-//                return
-//            }
-//            DispatchQueue.main.async {
-//                completion(image)
-//            }
-//        }
     }
 }

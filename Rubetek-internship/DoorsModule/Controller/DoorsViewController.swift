@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 final class DoorsViewController: UIViewController {
     
@@ -14,9 +15,20 @@ final class DoorsViewController: UIViewController {
     
     private lazy var customView = DoorsView()
 
-    private lazy var networkService: ServiceProtocol = Service()
+    private lazy var realm : Realm = {
+        return try! Realm()
+    }()
     
-    var arr: [DoorsRawModel] = []
+    private lazy var doorsObj = { realm.objects(DoorsResponseModel.self) }()
+    private lazy var doorsModel = DoorsResponseModel()
+    
+    private lazy var doors: [(String, UIImage?)] = [] {
+        didSet {
+            DispatchQueue.main.async {
+                self.customView.tableView.reloadData()
+            }
+        }
+    }
     
     override func loadView() {
         super.loadView()
@@ -27,18 +39,20 @@ final class DoorsViewController: UIViewController {
         super.viewDidLoad()
         configureNavigationBar()
         setupTableView()
-        networkService.fetchDoorsData { result, error in
-            if let result = result {
-                self.arr = result
-                
-//                print(self.arr.count)
-                
-                DispatchQueue.main.async {
-                    self.customView.tableView.reloadData()
+        
+        if doorsObj.isEmpty {
+            doorsModel.fetchData { [weak self] result, error in
+                guard let self = self else { return }
+                if let result: DoorsResponseModel = result as? DoorsResponseModel {
+                    self.prepareToShowData(result)
+                }
+                if let error = error {
+                    print(error)
                 }
             }
-            if let error = error {
-                print(error.localizedDescription)
+        } else {
+            if let obj = doorsObj.first {
+                self.prepareToShowData(obj)
             }
         }
     }
@@ -61,22 +75,34 @@ extension DoorsViewController {
         customView.tableView.register(DoorsTableCell.self, forCellReuseIdentifier: cellId)
         customView.tableView.register(DoorsWithCameraTableCell.self, forCellReuseIdentifier: cellWithCameraId)
     }
+    
+    private func prepareToShowData(_ result: DoorsResponseModel) {
+        for data in result.data {
+            if let imageStr = data.snapshot {
+                ImageLoader.shared.loadImage(from: imageStr) { image in
+                    self.doors.append((data.name, image))
+                }
+            } else {
+                doors.append((data.name, nil))
+            }
+        }
+    }
 }
 
 extension DoorsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        arr.count
+        doors.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! DoorsTableCell
         let cellWithCamera = tableView.dequeueReusableCell(withIdentifier: cellWithCameraId, for: indexPath) as! DoorsWithCameraTableCell
-        let model = arr[indexPath.row]
-        if model.snapshot == nil {
-            cell.setupCell(name: model.name)
+        let model = doors[indexPath.row]
+        if model.1 == nil {
+            cell.setupCell(name: model.0)
             return cell
         } else {
-            cellWithCamera.setupCell(image: nil, name: model.name)
+            cellWithCamera.setupCell(image: model.1, name: model.0)
             return cellWithCamera
         }
     }
