@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import RealmSwift
 
 final class DoorsViewController: UIViewController {
     
@@ -14,14 +13,18 @@ final class DoorsViewController: UIViewController {
     private let cellWithCameraId = "doorsCellWithCameraId"
     
     private lazy var customView = DoorsView()
-
-    private lazy var realm : Realm = {
-        return try! Realm()
+    private lazy var refreshControl: UIRefreshControl = {
+       let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        return refreshControl
     }()
-    
-    private lazy var doorsObj = { realm.objects(DoorsResponseModel.self) }()
+
     private lazy var doorsModel = DoorsResponseModel()
     
+    private lazy var doorsObj = {
+        try! doorsModel.fetchDataFromRealm()
+    }()
+
     private lazy var doors: [(String, UIImage?)] = [] {
         didSet {
             DispatchQueue.main.async {
@@ -60,6 +63,7 @@ extension DoorsViewController {
         customView.tableView.dataSource = self
         customView.tableView.register(DoorsTableCell.self, forCellReuseIdentifier: cellId)
         customView.tableView.register(DoorsWithCameraTableCell.self, forCellReuseIdentifier: cellWithCameraId)
+        customView.tableView.refreshControl = refreshControl
     }
     
     private func getData() {
@@ -67,6 +71,9 @@ extension DoorsViewController {
             doorsModel.fetchData { [weak self] result, error in
                 guard let self = self else { return }
                 if let result: DoorsResponseModel = result as? DoorsResponseModel {
+                    DispatchQueue.main.async {
+                        self.doorsModel.saveData(data: result)
+                    }
                     self.prepareToShowData(result)
                 }
                 if let error = error {
@@ -91,8 +98,54 @@ extension DoorsViewController {
             }
         }
     }
+    
+    private func showAlertForEditing(index: Int) {
+        let modelObj = doorsObj.first?.data[index]
+        let alert = UIAlertController(title: "Введите название", message: "", preferredStyle: .alert)
+
+        alert.addTextField { (textField) in
+            textField.layer.cornerRadius = 12
+            textField.font = UIFont(name: Assets.fontRegular.rawValue, size: 17)
+            textField.textColor = .textLabelForCells
+            textField.attributedPlaceholder = NSAttributedString(string: "Новое имя", attributes: [
+                NSAttributedString.Key.foregroundColor: UIColor.textLabelForCells,
+                NSAttributedString.Key.font: UIFont(name: Assets.fontRegular.rawValue, size: 17)!,
+            ])
+            textField.textAlignment = .center
+        }
+
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { [weak self] (_) in
+            guard let self = self else { return }
+                let textField = alert.textFields![0]
+            self.doorsModel.changeName(data: modelObj, newName: textField.text)
+            self.editAndUpdateUI(index: index, newName: textField.text)
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func editAndUpdateUI(index: Int, newName: String?) {
+        if let newName = newName,
+           !newName.isEmpty {
+            doors[index].0 = newName
+            DispatchQueue.main.async {
+                self.customView.tableView.reloadData()
+            }
+        }
+    }
+    
+    @objc private func refreshData(_ sender: UIRefreshControl) {
+        doorsModel.deleteData(data: doorsObj) { [weak self] result, error in
+            guard let self = self else { return }
+            if result {
+                self.doors.removeAll()
+                self.getData()
+            }
+        }
+        sender.endRefreshing()
+    }
 }
 
+//MARK: - UITableViewDelegate, UITableViewDataSource
 extension DoorsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         doors.count
@@ -113,15 +166,18 @@ extension DoorsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
-        let editAction = UIContextualAction(style: .normal, title: nil) { action, view, completion in
-            
+        let editAction = UIContextualAction(style: .normal, title: nil) { _, _, completion in
+            self.showAlertForEditing(index: indexPath.row)
             completion(true)
         }
         editAction.image = UIImage(named: Assets.editBtn.rawValue)
         editAction.backgroundColor = .systemGroupedBackground
         
-        let starAction = UIContextualAction(style: .normal, title: nil) { action, view, completion in
-            //TODO logic
+        let starAction = UIContextualAction(style: .normal, title: nil) { [weak self] _, _, completion in
+            guard let self = self else { return }
+            guard let isFavorite = self.doorsObj.first?.data[indexPath.row].favorites else { return }
+            self.doorsModel.addToFavorites(data: self.doorsObj.first?.data[indexPath.row],
+                                           isFavorite: !isFavorite)
             completion(true)
         }
         starAction.image = UIImage(named: Assets.starBtn.rawValue)
@@ -129,5 +185,4 @@ extension DoorsViewController: UITableViewDelegate, UITableViewDataSource {
         
         return UISwipeActionsConfiguration(actions: [starAction, editAction])
     }
-    
 }
