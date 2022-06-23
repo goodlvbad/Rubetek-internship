@@ -33,7 +33,31 @@ final class CamerasViewController: UIViewController {
         super.viewDidLoad()
         configureNavigationBar()
         setupTableView()
+        getData()
+    }
+}
 
+//MARK: - Private Methods
+extension CamerasViewController {
+    private func configureNavigationBar() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .systemBackground
+        appearance.shadowColor = .clear
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.setValue(true, forKey: "hidesShadow")
+    }
+    
+    private func setupTableView() {
+        customView.tableView.delegate = self
+        customView.tableView.dataSource = self
+        customView.tableView.register(CamerasTableCell.self, forCellReuseIdentifier: cellId)
+        customView.tableView.register(CamerasSectionView.self, forHeaderFooterViewReuseIdentifier: headerId)
+    }
+    
+    private func getData() {
         if camerasObj.isEmpty {
             cameraModel.fetchData { [weak self] result, error in
                 guard let self = self else { return }
@@ -49,25 +73,6 @@ final class CamerasViewController: UIViewController {
                 self.prepareToShowData(obj)
             }
         }
-    }
-}
-
-//MARK: - Private Methods
-extension CamerasViewController {
-    private func configureNavigationBar() {
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = .systemBackground
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.compactAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
-    }
-    
-    private func setupTableView() {
-        customView.tableView.delegate = self
-        customView.tableView.dataSource = self
-        customView.tableView.register(CamerasTableCell.self, forCellReuseIdentifier: cellId)
-        customView.tableView.register(CamerasSectionView.self, forHeaderFooterViewReuseIdentifier: headerId)
     }
     
     private func prepareToShowData(_ result: CamerasResponseModel) {
@@ -118,5 +123,16 @@ extension CamerasViewController: UITableViewDelegate, UITableViewDataSource {
         let sectionName = cameras[section].first?.0
         header.setupHeader(title: sectionName)
         return header
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let starAction = UIContextualAction(style: .normal, title: nil) { action, view, completion in
+            //TODO logic
+            completion(true)
+        }
+        starAction.image = UIImage(named: Assets.starBtn.rawValue)
+        starAction.backgroundColor = .systemGroupedBackground
+        
+        return UISwipeActionsConfiguration(actions: [starAction])
     }
 }

@@ -24,7 +24,8 @@ final class DoorsTableCell: UITableViewCell {
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.font = UIFont(name: Assets.fontRegular.rawValue, size: 17)
+        label.textColor = .textLabelForCells
         label.backgroundColor = .clear
         label.numberOfLines = 0
         label.adjustsFontSizeToFitWidth = true
@@ -37,7 +38,7 @@ final class DoorsTableCell: UITableViewCell {
         let btn = UIButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(didTapLockBtn(_:)), for: .touchUpInside)
-        btn.setBackgroundImage(UIImage(named: Assets.lockBtn.rawValue), for: .normal)
+        btn.setBackgroundImage(UIImage(named: Assets.lockOnBtn.rawValue), for: .normal)
         return btn
     }()
     
@@ -76,9 +77,8 @@ extension DoorsTableCell {
             nameLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
             nameLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -10),
             
-            lockBtn.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 10),
             lockBtn.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
-            lockBtn.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -10),
+            lockBtn.centerYAnchor.constraint(equalTo: nameLabel.centerYAnchor),
         ])
     }
     

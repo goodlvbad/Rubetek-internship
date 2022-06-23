@@ -28,7 +28,8 @@ final class CamerasTableCell: UITableViewCell {
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.font = UIFont(name: Assets.fontRegular.rawValue, size: 17)
+        label.textColor = .textLabelForCells
         label.backgroundColor = .clear
         label.numberOfLines = 0
         label.adjustsFontSizeToFitWidth = true
@@ -51,6 +52,11 @@ final class CamerasTableCell: UITableViewCell {
     func setupCell(image: UIImage?, name: String?) {
         cameraImageView.image = image
         nameLabel.text = name
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        cameraImageView.roundCorners(corners: [.topLeft, .topRight], radius: cornerRadius)
     }
 }
 

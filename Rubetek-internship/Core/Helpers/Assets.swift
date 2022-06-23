@@ -8,5 +8,11 @@
 import Foundation
 
 enum Assets: String {
-    case lockBtn = "lockBtnDoors"
+    case lockOffBtn = "lockoff"
+    case lockOnBtn = "lockon"
+    case editBtn = "edit"
+    case starBtn = "star"
+    
+    case fontRegular = "Circe-Regular"
+    case fontLight = "Circe-Light"
 }

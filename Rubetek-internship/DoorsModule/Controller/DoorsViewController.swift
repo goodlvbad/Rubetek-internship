@@ -39,7 +39,30 @@ final class DoorsViewController: UIViewController {
         super.viewDidLoad()
         configureNavigationBar()
         setupTableView()
-        
+        getData()
+    }
+}
+
+//MARK: - Private Methods
+extension DoorsViewController {
+    private func configureNavigationBar() {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .systemBackground
+        appearance.shadowColor = .clear
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+    }
+    
+    private func setupTableView() {
+        customView.tableView.delegate = self
+        customView.tableView.dataSource = self
+        customView.tableView.register(DoorsTableCell.self, forCellReuseIdentifier: cellId)
+        customView.tableView.register(DoorsWithCameraTableCell.self, forCellReuseIdentifier: cellWithCameraId)
+    }
+    
+    private func getData() {
         if doorsObj.isEmpty {
             doorsModel.fetchData { [weak self] result, error in
                 guard let self = self else { return }
@@ -55,25 +78,6 @@ final class DoorsViewController: UIViewController {
                 self.prepareToShowData(obj)
             }
         }
-    }
-}
-
-//MARK: - Private Methods
-extension DoorsViewController {
-    private func configureNavigationBar() {
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = .systemBackground
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.compactAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
-    }
-    
-    private func setupTableView() {
-        customView.tableView.delegate = self
-        customView.tableView.dataSource = self
-        customView.tableView.register(DoorsTableCell.self, forCellReuseIdentifier: cellId)
-        customView.tableView.register(DoorsWithCameraTableCell.self, forCellReuseIdentifier: cellWithCameraId)
     }
     
     private func prepareToShowData(_ result: DoorsResponseModel) {
@@ -105,6 +109,25 @@ extension DoorsViewController: UITableViewDelegate, UITableViewDataSource {
             cellWithCamera.setupCell(image: model.1, name: model.0)
             return cellWithCamera
         }
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        let editAction = UIContextualAction(style: .normal, title: nil) { action, view, completion in
+            
+            completion(true)
+        }
+        editAction.image = UIImage(named: Assets.editBtn.rawValue)
+        editAction.backgroundColor = .systemGroupedBackground
+        
+        let starAction = UIContextualAction(style: .normal, title: nil) { action, view, completion in
+            //TODO logic
+            completion(true)
+        }
+        starAction.image = UIImage(named: Assets.starBtn.rawValue)
+        starAction.backgroundColor = .systemGroupedBackground
+        
+        return UISwipeActionsConfiguration(actions: [starAction, editAction])
     }
     
 }

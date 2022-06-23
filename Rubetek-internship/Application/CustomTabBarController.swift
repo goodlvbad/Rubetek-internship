@@ -9,6 +9,13 @@ import UIKit
 
 class CustomTabBarController: UITabBarController {
     
+    private let indicatorLineHeight: CGFloat = 1.5
+    
+    private let titleAttributes = [
+        NSAttributedString.Key.font: UIFont(name: Assets.fontRegular.rawValue, size: 21)!,
+        NSAttributedString.Key.foregroundColor: UIColor.textLabel,
+    ]
+    
     private let doorsSection = DoorsViewController()
     private let camerasSection = CamerasViewController()
     
@@ -38,9 +45,13 @@ extension CustomTabBarController {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = .systemBackground
+        appearance.shadowColor = .clear
+        appearance.titleTextAttributes = titleAttributes
+        appearance.largeTitleTextAttributes = titleAttributes
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.compactAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.tintColor = .textLabel
         navigationItem.title = "Мой дом"
     }
     
@@ -48,7 +59,11 @@ extension CustomTabBarController {
         let appearance = UITabBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = .systemBackground
+        appearance.stackedLayoutAppearance.selected.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: -(tabBar.frame.size.height / 4))
+        appearance.stackedLayoutAppearance.normal.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: -(tabBar.frame.size.height / 4))
         tabBar.standardAppearance = appearance
+        UITabBarItem.appearance().setTitleTextAttributes(titleAttributes, for: .normal)
+        UITabBarItem.appearance().setTitleTextAttributes(titleAttributes, for: .selected)
     }
     
     private func setupTabBar() {
@@ -59,7 +74,13 @@ extension CustomTabBarController {
         for counter in 0..<controllers.count {
             controllers[counter].title = arrayOfTitles[counter]
         }
-        tabBar.tintColor = .blue
+        
+        tabBar.tintColor = .customBlueColor
         tabBar.backgroundColor = .systemBackground
+        tabBar.selectionIndicatorImage = UIImage().createSelectionIndicator(
+            color: .customBlueColor,
+            size: CGSize(width: tabBar.frame.width/CGFloat(tabBar.items!.count),
+                         height: (tabBar.frame.height - indicatorLineHeight)),
+            lineHeight: indicatorLineHeight)
     }
 }

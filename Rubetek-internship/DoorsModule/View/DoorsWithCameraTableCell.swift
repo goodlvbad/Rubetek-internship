@@ -17,7 +17,7 @@ final class DoorsWithCameraTableCell: UITableViewCell {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.layer.cornerRadius = cornerRadius
-        view.backgroundColor = .red
+        view.backgroundColor = .systemBackground
         return view
     }()
     
@@ -29,7 +29,8 @@ final class DoorsWithCameraTableCell: UITableViewCell {
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.font = UIFont(name: Assets.fontRegular.rawValue, size: 17)
+        label.textColor = .textLabelForCells
         label.backgroundColor = .clear
         label.numberOfLines = 0
         label.adjustsFontSizeToFitWidth = true
@@ -42,7 +43,7 @@ final class DoorsWithCameraTableCell: UITableViewCell {
         let btn = UIButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.addTarget(self, action: #selector(didTapLockBtn(_:)), for: .touchUpInside)
-        btn.setBackgroundImage(UIImage(named: Assets.lockBtn.rawValue), for: .normal)
+        btn.setBackgroundImage(UIImage(named: Assets.lockOffBtn.rawValue), for: .normal)
         return btn
     }()
     
@@ -60,6 +61,11 @@ final class DoorsWithCameraTableCell: UITableViewCell {
     func setupCell(image: UIImage?, name: String?) {
         cameraImageView.image = image
         nameLabel.text = name
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        cameraImageView.roundCorners(corners: [.topLeft, .topRight], radius: cornerRadius)
     }
 }
 
@@ -88,9 +94,8 @@ extension DoorsWithCameraTableCell {
             nameLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
             nameLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -10),
             
-            lockBtn.topAnchor.constraint(equalTo: cameraImageView.bottomAnchor, constant: 10),
             lockBtn.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
-            lockBtn.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -10),
+            lockBtn.centerYAnchor.constraint(equalTo: nameLabel.centerYAnchor),
         ])
     }
     

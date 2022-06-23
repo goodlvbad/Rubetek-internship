@@ -13,8 +13,8 @@ final class CamerasSectionView: UITableViewHeaderFooterView {
     private lazy var title: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .darkGray
-        label.font = UIFont.systemFont(ofSize: 28)
+        label.textColor = .textLabel
+        label.font = UIFont(name: Assets.fontLight.rawValue, size: 21)
         return label
     }()
     
