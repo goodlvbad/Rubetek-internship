@@ -26,6 +26,22 @@ final class CamerasTableCell: UITableViewCell {
         return imageView
     }()
     
+    private lazy var recImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: Assets.recImg.rawValue)
+        imageView.isHidden = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    private lazy var starImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: Assets.starImg.rawValue)
+        imageView.isHidden = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: Assets.fontRegular.rawValue, size: 17)
@@ -49,9 +65,11 @@ final class CamerasTableCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupCell(image: UIImage?, name: String?) {
+    func setupCell(image: UIImage?, name: String?, rec: Bool, isFavorite: Bool) {
         cameraImageView.image = image
         nameLabel.text = name
+        recImageView.isHidden = rec
+        starImageView.isHidden = isFavorite
     }
     
     override func layoutSubviews() {
@@ -66,6 +84,10 @@ extension CamerasTableCell {
         containerView.addSubviews([
             cameraImageView,
             nameLabel,
+        ])
+        cameraImageView.addSubviews([
+            recImageView,
+            starImageView,
         ])
         
         NSLayoutConstraint.activate([
@@ -83,6 +105,12 @@ extension CamerasTableCell {
             nameLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
             nameLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
             nameLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -10),
+            
+            recImageView.topAnchor.constraint(equalTo: cameraImageView.topAnchor, constant: 10),
+            recImageView.leadingAnchor.constraint(equalTo: cameraImageView.leadingAnchor, constant: 10),
+            
+            starImageView.topAnchor.constraint(equalTo: cameraImageView.topAnchor, constant: 10),
+            starImageView.trailingAnchor.constraint(equalTo: cameraImageView.trailingAnchor, constant: -10),
         ])
     }
 }

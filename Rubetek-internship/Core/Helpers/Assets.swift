@@ -12,7 +12,10 @@ enum Assets: String {
     case lockOnBtn = "lockon"
     case editBtn = "edit"
     case starBtn = "star"
+    case recImg = "rec"
+    case starImg = "star-1"
     
+    //fonts
     case fontRegular = "Circe-Regular"
     case fontLight = "Circe-Light"
 }

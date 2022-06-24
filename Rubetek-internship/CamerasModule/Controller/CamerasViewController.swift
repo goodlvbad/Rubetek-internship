@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import RealmSwift
 
 final class CamerasViewController: UIViewController {
     
@@ -14,15 +13,25 @@ final class CamerasViewController: UIViewController {
     private let headerId = "camerasHeaderId"
     
     private lazy var customView = CamerasView()
-
-    private lazy var realm : Realm = {
-        return try! Realm()
+    private lazy var refreshControl: UIRefreshControl = {
+       let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        return refreshControl
     }()
     
-    private lazy var camerasObj = { realm.objects(CamerasResponseModel.self) }()
     private lazy var cameraModel = CamerasResponseModel()
+    private lazy var camerasObj = {
+        try! cameraModel.fetchDataFromRealm()
+    }()
     
-    private lazy var cameras: [[(String?, String?, String?)]] = []
+    // 0 - roomName, 1 - cameraName, 2 - imageStr, 3 - rec, 4 - isFavorite
+    private lazy var cameras: [[(String?, String?, String?, Bool, Bool)]] = [] {
+        didSet {
+            DispatchQueue.main.async {
+                self.customView.tableView.reloadData()
+            }
+        }
+    }
     
     override func loadView() {
         super.loadView()
@@ -47,7 +56,6 @@ extension CamerasViewController {
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.compactAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
-        navigationController?.navigationBar.setValue(true, forKey: "hidesShadow")
     }
     
     private func setupTableView() {
@@ -55,6 +63,7 @@ extension CamerasViewController {
         customView.tableView.dataSource = self
         customView.tableView.register(CamerasTableCell.self, forCellReuseIdentifier: cellId)
         customView.tableView.register(CamerasSectionView.self, forHeaderFooterViewReuseIdentifier: headerId)
+        customView.tableView.refreshControl = refreshControl
     }
     
     private func getData() {
@@ -62,6 +71,9 @@ extension CamerasViewController {
             cameraModel.fetchData { [weak self] result, error in
                 guard let self = self else { return }
                 if let result: CamerasResponseModel = result as? CamerasResponseModel {
+                    DispatchQueue.main.async {
+                        self.cameraModel.saveData(data: result)
+                    }
                     self.prepareToShowData(result)
                 }
                 if let error = error {
@@ -77,21 +89,31 @@ extension CamerasViewController {
     
     private func prepareToShowData(_ result: CamerasResponseModel) {
         for roomName in result.data.room {
-            var tempArr: [(String?, String?, String?)] = []
+            var tempArr: [(String?, String?, String?, Bool, Bool)] = []
             for camera in result.data.cameras {
                 let cameraName = camera.name
                 let cameraRoomName = camera.room
                 let imageStr = camera.snapshot
-                let cameraData = (cameraRoomName, cameraName, imageStr)
+                let rec = camera.rec
+                let isFavorite = camera.favorites
+                let cameraData = (cameraRoomName, cameraName, imageStr, rec, isFavorite)
                 if cameraRoomName?.lowercased() == roomName.lowercased() {
                     tempArr.append(cameraData)
                 }
             }
             cameras.append(tempArr)
         }
-        DispatchQueue.main.async {
-            self.customView.tableView.reloadData()
+    }
+    
+    @objc private func refreshData(_ sender: UIRefreshControl) {
+        cameraModel.deleteData(data: camerasObj) { [weak self] result, error in
+            guard let self = self else { return }
+            if result {
+                self.cameras.removeAll()
+                self.getData()
+            }
         }
+        sender.endRefreshing()
     }
 }
 
@@ -110,10 +132,10 @@ extension CamerasViewController: UITableViewDelegate, UITableViewDataSource {
         let model = cameras[indexPath.section][indexPath.row]
         if let imageStr = model.2 {
             ImageLoader.shared.loadImage(from: imageStr) { image in
-                cell.setupCell(image: image, name: model.1)
+                cell.setupCell(image: image, name: model.1, rec: model.3, isFavorite: model.4)
             }
         } else {
-            cell.setupCell(image: nil, name: model.1)
+            cell.setupCell(image: nil, name: model.1, rec: model.3, isFavorite: model.4)
         }
         return cell
     }
@@ -126,13 +148,16 @@ extension CamerasViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let starAction = UIContextualAction(style: .normal, title: nil) { action, view, completion in
-            //TODO logic
+        let starAction = UIContextualAction(style: .normal, title: nil) { [weak self] _, _, completion in
+            guard let self = self else { return }
+            guard let data = self.camerasObj.first?.data.cameras[indexPath.row] else { return }
+            self.cameraModel.addToFavorites(data: data, isFavorite: !data.favorites) { result, error in
+                self.cameras[indexPath.section][indexPath.row].4 = !data.favorites
+            }
             completion(true)
         }
         starAction.image = UIImage(named: Assets.starBtn.rawValue)
         starAction.backgroundColor = .systemGroupedBackground
-        
         return UISwipeActionsConfiguration(actions: [starAction])
     }
 }

@@ -30,12 +30,16 @@ class CamerasResponseModel: Object, Responsable {
         NetworkCore.shared.request(metadata: "cameras") { (result: Result<CamerasResponseModel, NetworkError>) in
             switch result {
             case .success(let respones):
-                self.saveData(data: respones)
                 comletion(respones, nil)
             case .failure(let error):
                 comletion(nil, error)
             }
         }
+    }
+    
+    func fetchDataFromRealm() throws -> Results<CamerasResponseModel> {
+        let realm = try Realm()
+        return realm.objects(CamerasResponseModel.self)
     }
     
     func saveData(data: CamerasResponseModel) {
@@ -52,4 +56,37 @@ class CamerasResponseModel: Object, Responsable {
             print(error)
         }
     }
+    
+    func deleteData(data: Results<CamerasResponseModel>, comletion: @escaping (_ result: Bool, _ error: Error?) -> Void) {
+        do {
+            let realm = try Realm()
+            do {
+                try realm.write({
+                    realm.delete(data)
+                    comletion(true, nil)
+                })
+            }
+        } catch {
+            print(error)
+            comletion(false, error)
+        }
+    }
+    
+    func addToFavorites(data: Cameras?, isFavorite: Bool, comletion: @escaping (_ result: Bool, _ error: Error?) -> Void) {
+        do {
+            let realm = try Realm()
+            if let data = data {
+                do {
+                    try realm.write({
+                        data.favorites = isFavorite
+                        comletion(true, nil)
+                    })
+                }
+            }
+        } catch {
+            print(error)
+            comletion(false, error)
+        }
+    }
+    
 }
